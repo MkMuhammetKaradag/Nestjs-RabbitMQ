@@ -13,6 +13,6 @@ export class AuthService {
     return this.userRepository.find();
   }
   async postUser() {
-    return this.userRepository.save({ name: 'Larry' });
+    return this.userRepository.save({ test: 'Barry' });
   }
 }
