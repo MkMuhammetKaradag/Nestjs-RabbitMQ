@@ -1,3 +1,4 @@
+import { SharedService } from '@app/shared';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions } from '@nestjs/microservices';
@@ -8,21 +9,24 @@ async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
   // await app.listen(3000);
   const configService = app.get(ConfigService);
-  const USER = configService.get('RABBITMQ_USER');
-  const PASS = configService.get('RABBITMQ_PASS');
-  const HOST = configService.get('RABBITMQ_HOST');
-  const QUEUE = configService.get('RABBITMQ_AUTH_QUEUE');
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
-    options: {
-      urls: [`amqp://${USER}:${PASS}@${HOST}`],
-      noAck: false,
-      queue: QUEUE,
-      queueOptions: {
-        durable: true,
-      },
-    },
-  });
+  // const USER = configService.get('RABBITMQ_USER');
+  // const PASS = configService.get('RABBITMQ_PASS');
+  // const HOST = configService.get('RABBITMQ_HOST');
+  // const QUEUE = configService.get('RABBITMQ_AUTH_QUEUE');
+  // app.connectMicroservice<MicroserviceOptions>({
+  //   transport: Transport.RMQ,
+  //   options: {
+  //     urls: [`amqp://${USER}:${PASS}@${HOST}`],
+  //     noAck: false,
+  //     queue: QUEUE,
+  //     queueOptions: {
+  //       durable: true,
+  //     },
+  //   },
+  // });
+  const sharedService = app.get(SharedService);
+  const queue = configService.get('RABBITMQ_AUTH_QUEUE');
+  app.connectMicroservice(sharedService.getRmqOptions(queue));
   app.startAllMicroservices();
 }
 bootstrap();
