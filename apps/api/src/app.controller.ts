@@ -1,4 +1,6 @@
+import { AuthGuard } from '@app/shared';
 import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common/decorators';
 import { ClientProxy } from '@nestjs/microservices/client/client-proxy';
 // import { AppService } from './app.service';
 
@@ -24,6 +26,7 @@ export class AppController {
     );
   }
 
+  @UseGuards(AuthGuard)
   @Get('presence')
   async getPresence() {
     return this.presenceService.send(

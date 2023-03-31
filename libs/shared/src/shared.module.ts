@@ -12,8 +12,8 @@ import { SharedService } from './shared.service';
       envFilePath: './.env',
     }),
   ],
-  providers: [SharedService, AuthGuard],
-  exports: [SharedService, AuthGuard],
+  providers: [SharedService],
+  exports: [SharedService],
 })
 export class SharedModule {
   static registerRmq(service: string, queue: string): DynamicModule {
