@@ -6,5 +6,14 @@ export class UserEntity {
   id: number;
 
   @Column()
-  test: string;
+  firstName: string;
+
+  @Column()
+  lastName: string;
+
+  @Column({ unique: true })
+  email: string;
+
+  @Column({ select: false })
+  password: string;
 }

@@ -1,8 +1,9 @@
 import { SharedService } from '@app/shared';
 import { Controller, Get } from '@nestjs/common';
 import { RmqContext } from '@nestjs/microservices/ctx-host';
-import { Ctx, MessagePattern } from '@nestjs/microservices/decorators';
+import { Ctx, MessagePattern, Payload } from '@nestjs/microservices/decorators';
 import { AuthService } from './auth.service';
+import { NewUserDTO } from './dtos/new-user.dto';
 
 @Controller()
 export class AuthController {
@@ -13,12 +14,14 @@ export class AuthController {
 
   @MessagePattern({ cmd: 'get-users' })
   async getUsers(@Ctx() context: RmqContext) {
+    console.log('kontroller içi');
     this.sharedService.acknowledgeMessage(context);
     return this.authService.getUsers();
   }
-  @MessagePattern({ cmd: 'post-user' })
-  async postUseer(@Ctx() context: RmqContext) {
+
+  @MessagePattern({ cmd: 'register' })
+  async register(@Ctx() context: RmqContext, @Payload() newUser: NewUserDTO) {
     this.sharedService.acknowledgeMessage(context);
-    return this.authService.postUser();
+    return this.authService.register(newUser);
   }
 }
