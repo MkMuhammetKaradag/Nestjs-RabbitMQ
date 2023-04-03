@@ -1,5 +1,5 @@
 import { SharedService } from '@app/shared';
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, UseGuards } from '@nestjs/common';
 import { RmqContext } from '@nestjs/microservices/ctx-host';
 import { Ctx, MessagePattern, Payload } from '@nestjs/microservices/decorators';
 import { AuthService } from './auth.service';
@@ -10,7 +10,9 @@ import { JwtGuard } from './jwt.guard';
 @Controller()
 export class AuthController {
   constructor(
+    @Inject('AuthServiceInterface')
     private readonly authService: AuthService,
+    @Inject('SharedServiceInterface')
     private readonly sharedService: SharedService,
   ) {}
 

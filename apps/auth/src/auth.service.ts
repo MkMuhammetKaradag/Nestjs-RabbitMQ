@@ -7,23 +7,26 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NewUserDTO } from './dtos/new-user.dto';
-import { UserEntity } from './user.entity';
+
 import * as bcrypt from 'bcrypt';
 import { ExistingUserDTO } from './dtos/existing-user.dto';
 import { JwtService } from '@nestjs/jwt';
+import { UserRepositoryInterface } from '@app/shared/interfaces/users.repository.interface';
+import { AuthServiceInterface } from './interface/auth.service.interface';
+import { UserEntity } from '@app/shared';
 @Injectable()
-export class AuthService {
+export class AuthService implements AuthServiceInterface {
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
+    @Inject('UsersRepositoryInterface')
+    private readonly userRepository: UserRepositoryInterface,
     private readonly jwtService: JwtService,
   ) {}
   async getUsers() {
     console.log('servis içi');
-    return this.userRepository.find();
+    return this.userRepository.findAll();
   }
   async findByEmail(email: string): Promise<UserEntity> {
-    return this.userRepository.findOne({
+    return this.userRepository.findByCondition({
       where: { email },
       select: ['id', 'firstName', 'lastName', 'email', 'password'],
     });
@@ -60,7 +63,7 @@ export class AuthService {
   async doesPasswordMatch(
     password: string,
     hashedPassword: string,
-  ): Promise<Boolean> {
+  ): Promise<boolean> {
     return bcrypt.compare(password, hashedPassword);
   }
   async validateUser(email: string, password: string): Promise<UserEntity> {
