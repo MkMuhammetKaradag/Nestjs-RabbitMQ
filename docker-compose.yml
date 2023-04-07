@@ -72,7 +72,16 @@ services:
       # - pgdata:/var/lib/postgresql/data
       # - pgconf:/etc/postgresql
       # - pglog:/var/log/postgresql
- # volumes:
+  redis:
+    image: redis
+    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASS"
+    env_file:
+      - .env
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis/data:/data
+  # volumes:
 #   pgdata:
 #     driver: local
 #   pgconf:

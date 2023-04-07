@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PresenceController } from './presence.controller';
 import { PresenceService } from './presence.service';
+import { RedisModule } from '@app/shared/modules/redis.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { PresenceService } from './presence.service';
       envFilePath: './.env',
     }),
     SharedModule,
+    RedisModule,
     // SharedModule.registerRmq('AUTH_SERVICE', process.env.RABBITMQ_AUTH_QUEUE),
   ],
   controllers: [PresenceController],
