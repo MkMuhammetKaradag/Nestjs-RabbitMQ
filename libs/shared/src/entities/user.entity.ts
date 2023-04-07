@@ -5,6 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { FriendRequestEntity } from './friend-request.entity';
 // import { ConversationEntity } from './conversation.entity';
 
 // import { FriendRequestEntity } from './friend-request.entity';
@@ -27,17 +28,20 @@ export class UserEntity {
   @Column({ select: false })
   password: string;
 
-  //   @OneToMany(
-  //     () => FriendRequestEntity,
-  //     (friendRequestEntity) => friendRequestEntity.creator,
-  //   )
-  //   friendRequestCreator: FriendRequestEntity[];
 
-  //   @OneToMany(
-  //     () => FriendRequestEntity,
-  //     (FriendRequestEntity) => FriendRequestEntity.receiver,
-  //   )
-  //   friendRequestReceiver: FriendRequestEntity[];
+
+
+    @OneToMany(
+      () => FriendRequestEntity,
+      (friendRequestEntity) => friendRequestEntity.creator,
+    )
+    friendRequestCreator: FriendRequestEntity[];
+
+    @OneToMany(
+      () => FriendRequestEntity,
+      (FriendRequestEntity) => FriendRequestEntity.receiver,
+    )
+    friendRequestReceiver: FriendRequestEntity[];
 
   //   @ManyToMany(
   //     () => ConversationEntity,
