@@ -21,6 +21,7 @@ import { AppService } from './app.service';
       process.env.RABBITMQ_PRESENCE_QUEUE,
     ),
   ],
+  
   controllers: [AppController],
   providers: [
     AppService,
@@ -74,4 +75,6 @@ import { AppService } from './app.service';
     // },
   ],
 })
+
+
 export class AppModule {}
