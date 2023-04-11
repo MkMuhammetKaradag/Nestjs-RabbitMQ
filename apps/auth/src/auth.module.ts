@@ -18,6 +18,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtGuard } from './jwt.guard';
 import { JwtStrategy } from './jwt-strategy';
 import { UsersRepository } from '@app/shared/repositories/users.repository';
+import { ConversationEntity } from '@app/shared/entities/conversation.entity';
+import { MessageEntity } from '@app/shared/entities/message.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -34,27 +36,13 @@ import { UsersRepository } from '@app/shared/repositories/users.repository';
       }),
       inject: [ConfigService],
     }),
-    // TypeOrmModule.forRootAsync({
-    //   imports: [ConfigModule],
-    //   // useFactory: (configService: ConfigService) => ({
-    //   //   type: 'postgres',
-    //   //   url: `postgresql://${configService.get(
-    //   //     'POSTGRES_USER',
-    //   //   )}:${configService.get(
-    //   //     'POSTGRES_PASSWORD',
-    //   //   )}@postgres:5432/${configService.get('POSTGRES_DB')}`, //127.0.0.1
-    //   //   autoLoadEntities: true,
-    //   //   synchronize: true,
-    //   // }),
-    //   useFactory: () => ({
-    //     ...dataSourceOptions,
-    //     autoLoadEntities: true,
-    //     synchronize: true,
-    //   }),
-    //   inject: [ConfigService],
-    // }),
 
-    TypeOrmModule.forFeature([UserEntity, FriendRequestEntity]),
+    TypeOrmModule.forFeature([
+      UserEntity,
+      FriendRequestEntity,
+      ConversationEntity,
+      MessageEntity,
+    ]),
   ],
   controllers: [AuthController],
   providers: [

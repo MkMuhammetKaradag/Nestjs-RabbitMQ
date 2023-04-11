@@ -30,6 +30,9 @@ export class AuthService implements AuthServiceInterface {
     console.log('servis içi');
     return this.userRepository.findAll();
   }
+  async getUserById(id: number): Promise<UserEntity> {
+    return await this.userRepository.findOneById(id);
+  }
   async findByEmail(email: string): Promise<UserEntity> {
     return this.userRepository.findByCondition({
       where: { email },

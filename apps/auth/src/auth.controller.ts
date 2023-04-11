@@ -22,7 +22,15 @@ export class AuthController {
     this.sharedService.acknowledgeMessage(context);
     return this.authService.getUsers();
   }
+  @MessagePattern({ cmd: 'get-user' })
+  async getUserById(
+    @Ctx() context: RmqContext,
+    @Payload() user: { id: number },
+  ) {
+    this.sharedService.acknowledgeMessage(context);
 
+    return this.authService.getUserById(user.id);
+  }
   @MessagePattern({ cmd: 'register' })
   async register(@Ctx() context: RmqContext, @Payload() newUser: NewUserDTO) {
     this.sharedService.acknowledgeMessage(context);
@@ -74,5 +82,15 @@ export class AuthController {
     this.sharedService.acknowledgeMessage(context);
 
     return this.authService.getFriends(payload.userId);
+  }
+
+  @MessagePattern({ cmd: 'get-friends-list' })
+  async getFriendsList(
+    @Ctx() context: RmqContext,
+    @Payload() payload: { userId: number },
+  ) {
+    this.sharedService.acknowledgeMessage(context);
+
+    return this.authService.getFriendsList(payload.userId);
   }
 }

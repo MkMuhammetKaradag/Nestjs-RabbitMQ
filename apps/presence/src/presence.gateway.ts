@@ -14,7 +14,8 @@ import { firstValueFrom } from 'rxjs';
 import { FriendRequestEntity, UserJwt } from '@app/shared';
 
 import { ActiveUser } from './interfaces/ActiveUser.interface';
-import { Cache } from 'cache-manager';
+
+import { RedisCacheService } from '@app/shared/services/redis-cache.service';
 
 @WebSocketGateway({ cors: true })
 export class PresenceGateway
@@ -22,7 +23,7 @@ export class PresenceGateway
 {
   constructor(
     @Inject('AUTH_SERVICE') private readonly authService: ClientProxy,
-    @Inject(CACHE_MANAGER) private readonly cache: Cache,
+    private readonly cache: RedisCacheService,
   ) {}
   @WebSocketServer()
   server: Server;
